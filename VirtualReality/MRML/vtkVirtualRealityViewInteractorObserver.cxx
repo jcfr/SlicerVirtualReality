@@ -228,7 +228,7 @@ bool vtkVirtualRealityViewInteractorObserver::DelegateInteractionEventDataToDisp
 
   vtkVirtualRealityViewInteractorStyle* vrViewInteractorStyle =
       vtkVirtualRealityViewInteractorStyle::SafeDownCast(this->GetInteractorStyle());
-  if (!vrViewInteractorStyle)
+  if (vrViewInteractorStyle)
     {
     ed->SetWorldToPhysicalScale(vrViewInteractorStyle->GetMagnification());
     ed->SetAccuratePicker(vrViewInteractorStyle->GetAccuratePicker());
