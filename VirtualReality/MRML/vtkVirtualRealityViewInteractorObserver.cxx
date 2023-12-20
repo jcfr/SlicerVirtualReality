@@ -163,7 +163,9 @@ void vtkVirtualRealityViewInteractorObserver::ProcessEvents(
 bool vtkVirtualRealityViewInteractorObserver::DelegateInteractionEventToDisplayableManagers(unsigned long event, void* calldata)
 {
   vtkSmartPointer<vtkEventData> ed;
-  if (vtkCommand::EventHasData(event))
+  // "Elevation3DEvent" is checked explicitly due to an issue fixed in MR-10771
+  // See https://gitlab.kitware.com/vtk/vtk/-/merge_requests/10771
+  if (vtkCommand::EventHasData(event) || event == vtkCommand::Elevation3DEvent)
     {
     ed = vtkSmartPointer(static_cast<vtkEventData*>(calldata));
     }
