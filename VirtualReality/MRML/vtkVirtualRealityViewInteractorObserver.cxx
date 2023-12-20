@@ -19,6 +19,7 @@
 #include "vtkVirtualRealityViewInteractorObserver.h"
 
 // SlicerVirtualReality includes
+#include "vtkVirtualRealityViewInteractor.h"
 #include "vtkVirtualRealityViewInteractorStyle.h"
 
 // MRML includes
@@ -227,6 +228,9 @@ bool vtkVirtualRealityViewInteractorObserver::DelegateInteractionEventDataToDisp
   vtkRenderer* currentRenderer = this->GetInteractorStyle()->GetCurrentRenderer();
   ed->SetRenderer(currentRenderer);
 
+  vtkVirtualRealityViewInteractor* vrViewInteractor =
+      vtkVirtualRealityViewInteractor::SafeDownCast(this->GetInteractor());
+
   std::string interactionContextName;
   if (ed->GetDevice() == vtkEventDataDevice::LeftController)
     {
@@ -240,8 +244,9 @@ bool vtkVirtualRealityViewInteractorObserver::DelegateInteractionEventDataToDisp
     {
       interactionContextName = "HeadMountedDisplay";
     }
-  else
+  else if (vrViewInteractor && vrViewInteractor->GetCurrentGesture() == vtkCommand::NoEvent)
     {
+    // Report an error message only if the interactor is not processing a complex gesture.
     vtkErrorMacro("DelegateInteractionEventDataToDisplayableManagers: Unrecognized device");
     }
   ed->SetInteractionContextName(interactionContextName);
