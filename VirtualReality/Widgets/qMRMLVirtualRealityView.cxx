@@ -405,6 +405,10 @@ void qMRMLVirtualRealityViewPrivate::createRenderWindow(vtkMRMLVirtualRealityVie
 
   // Keep track of last valid parameters in the settings
   QSettings().setValue("VirtualReality/DefaultXRRuntime", xrRuntimeAsStr);
+#if defined(SlicerVirtualReality_HAS_OPENXRREMOTING_SUPPORT)
+  QSettings().setValue("VirtualReality/DefaultRemotingEnabled", this->MRMLVirtualRealityViewNode->GetRemoting());
+  QSettings().setValue("VirtualReality/DefaultPlayerIPAddress", QString::fromStdString(this->MRMLVirtualRealityViewNode->GetPlayerIPAddress()));
+#endif
 
   qDebug() << "";
   qDebug() << "XR runtime \"" << xrRuntimeAsStr << "\" initialized";
